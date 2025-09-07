@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>חיפוש שם מחשב</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+      background: #f5f5f5;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    #search {
+      width: 100%;
+      padding: .75rem;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-bottom: 1rem;
+    }
+    #results {
+      background: #fff;
+      border-radius: 4px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      min-height: 4rem;
+    }
+    .item {
+      padding: .5rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .item:last-child {
+      border-bottom: none;
+    }
+    .label {
+      font-weight: bold;
+    }
+    #footer {
+      color: red;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>חיפוש שם מחשב</h1>
+  <input
+    type="text"
+    id="search"
+    placeholder="הקלד שם מחשב (למשל HMOTI)"
+    autocomplete="off"
+  />
+
+  <div id="results">
+    הקלד שם מחשב כדי להתחיל בחיפוש...
+  </div>
+
+  <div id="footer">create by david abayov</div>
+
+  <script>
+    const data = [
+      {row:2, pile:4, shelf:2, comp:"HMOTI"},
+      {row:2, pile:1, shelf:3, comp:"HMTMOFER11"},
+      {row:3, pile:4, shelf:2, comp:"HNAAMAB"},
+      /* ... כל שאר הנתונים ... */
+      {row:9, pile:1, shelf:3, comp:"HMEYTALV"}
+    ];
+
+    const input = document.getElementById("search");
+    const results = document.getElementById("results");
+
+    input.addEventListener("input", () => {
+      const term = input.value.trim().toUpperCase();
+      if (!term) {
+        results.textContent = "הקלד שם מחשב כדי להתחיל בחיפוש...";
+        return;
+      }
+      const filtered = data.filter(item => item.comp === term);
+      if (filtered.length === 0) {
+        results.textContent = `לא נמצאו תוצאות עבור "${term}"`;
+        return;
+      }
+      results.innerHTML = "";
+      filtered.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <div><span class="label">שורה:</span> ${item.row}</div>
+          <div><span class="label">ערמה:</span> ${item.pile}</div>
+          <div><span class="label">מדף:</span> ${item.shelf !== null ? item.shelf : "NA"}</div>
+          <div><span class="label">שם מחשב:</span> ${item.comp}</div>
+        `;
+        results.appendChild(div);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -75,10 +75,10 @@
           const values = lines[i].split(',');
           if (values.length >= 4) {
             data.push({
-              row: values[0],
-              pile: values[1],
-              shelf: values[2],
-              comp: values[3].toUpperCase()
+              row: values[0].trim(),
+              pile: values[1].trim(),
+              shelf: values[2].trim(),
+              comp: values[3].trim().toUpperCase()
             });
           }
         }
@@ -91,6 +91,10 @@
       const term = input.value.trim().toUpperCase();
       if (!term) {
         results.textContent = "הקלד שם מחשב כדי להתחיל בחיפוש...";
+        return;
+      }
+      if (data.length === 0) {
+        results.textContent = "הנתונים עדיין נטענים, נסה שוב בעוד רגע...";
         return;
       }
       const filtered = data.filter(item => item.comp === term);

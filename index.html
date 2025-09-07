@@ -64,13 +64,25 @@
   <div id="footer">create by david abayov</div>
 
   <script>
-    const data = [
-      {row:2, pile:4, shelf:2, comp:"HMOTI"},
-      {row:2, pile:1, shelf:3, comp:"HMTMOFER11"},
-      {row:3, pile:4, shelf:2, comp:"HNAAMAB"},
-      /* ... כל שאר הנתונים ... */
-      {row:9, pile:1, shelf:3, comp:"HMEYTALV"}
-    ];
+    const data = [];
+
+    // טוען את קובץ ה-CSV
+    fetch('data.csv')
+      .then(response => response.text())
+      .then(csv => {
+        const lines = csv.trim().split('\n');
+        for (let i = 1; i < lines.length; i++) {
+          const values = lines[i].split(',');
+          if (values.length >= 4) {
+            data.push({
+              row: values[0],
+              pile: values[1],
+              shelf: values[2],
+              comp: values[3].toUpperCase()
+            });
+          }
+        }
+      });
 
     const input = document.getElementById("search");
     const results = document.getElementById("results");
@@ -93,7 +105,7 @@
         div.innerHTML = `
           <div><span class="label">שורה:</span> ${item.row}</div>
           <div><span class="label">ערמה:</span> ${item.pile}</div>
-          <div><span class="label">מדף:</span> ${item.shelf !== null ? item.shelf : "NA"}</div>
+          <div><span class="label">מדף:</span> ${item.shelf}</div>
           <div><span class="label">שם מחשב:</span> ${item.comp}</div>
         `;
         results.appendChild(div);
